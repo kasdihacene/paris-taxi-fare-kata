@@ -4,7 +4,8 @@ import org.springframework.stereotype.Service;
 import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Service
 public class TaxiService implements TaxiUseCase {
@@ -25,17 +26,18 @@ public class TaxiService implements TaxiUseCase {
 
         double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
 
+        int initialCharge = 1;
         if (isBetween6PMand7PM(dateTime)) {
-            Double price = 1 + 1 + fifthOfMilePrice;
+            Double price = initialCharge + 1 + fifthOfMilePrice;
             return price;
         }
 
         if (isBetween8PMand6AM(dateTime)) {
-            Double price = 1 + 0.5 + fifthOfMilePrice;
+            Double price = initialCharge + 0.5 + fifthOfMilePrice;
             return price;
         }
 
-        Double price = 1 + fifthOfMilePrice;
+        Double price = initialCharge + fifthOfMilePrice;
         return price;
     }
 

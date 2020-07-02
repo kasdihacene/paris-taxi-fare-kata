@@ -28,6 +28,6 @@ public class Ride {
     }
 
     public LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.parse(getStartTime()), ZoneId.of(ZoneOffset.UTC.getId()));
+        return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
     }
 }
