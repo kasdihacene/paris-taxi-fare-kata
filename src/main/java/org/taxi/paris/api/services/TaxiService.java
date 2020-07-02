@@ -21,12 +21,11 @@ public class TaxiService implements TaxiUseCase {
 
     @Override
     public Double priceOf(Ride ride) {
-        String startTime = ride.getStartTime();
-        Instant instant = Instant.parse(startTime);
-        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
+        LocalDateTime dateTime = ride.localDateTime();
 
         double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
-        if (isBetween6PMand8PM(dateTime)) {
+
+        if (isBetween6PMand7PM(dateTime)) {
             Double price = 1 + 1 + fifthOfMilePrice;
             return price;
         }
@@ -47,7 +46,7 @@ public class TaxiService implements TaxiUseCase {
                         && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)));
     }
 
-    private boolean isBetween6PMand8PM(LocalDateTime dateTime) {
+    private boolean isBetween6PMand7PM(LocalDateTime dateTime) {
         return (dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
                 && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0));
     }

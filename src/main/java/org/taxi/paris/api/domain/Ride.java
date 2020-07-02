@@ -3,6 +3,11 @@ package org.taxi.paris.api.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
 @Getter
 @Setter
 public class Ride {
@@ -20,5 +25,9 @@ public class Ride {
         this.distance = distance;
         this.startTime = startTime;
         this.duration = duration;
+    }
+
+    public LocalDateTime localDateTime() {
+        return LocalDateTime.ofInstant(Instant.parse(getStartTime()), ZoneId.of(ZoneOffset.UTC.getId()));
     }
 }
