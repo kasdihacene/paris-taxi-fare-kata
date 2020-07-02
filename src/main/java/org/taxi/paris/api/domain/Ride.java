@@ -14,6 +14,9 @@ import java.time.*;
 @NoArgsConstructor
 public class Ride extends SelfValidating {
 
+    private static final int ADDITIONAL_FOR_BUSY_PERIOD = 1;
+    private static final double ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM = 0.5;
+
     private int id;
     @Positive
     private int distance;
@@ -30,11 +33,11 @@ public class Ride extends SelfValidating {
         super.validateSelf();
     }
 
-    public LocalDateTime localDateTime() {
+    private LocalDateTime localDateTime() {
         return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
     }
 
-    public boolean isBetween8PMand6AM() {
+    private boolean isBetween8PMand6AM() {
         LocalDateTime dateTime = localDateTime();
         return ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
                 && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
@@ -42,13 +45,28 @@ public class Ride extends SelfValidating {
                         && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)));
     }
 
-    public boolean isBetween6PMand7PM() {
+    private boolean isBetween6PMand7PM() {
         LocalDateTime dateTime = localDateTime();
         return (dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
                 && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0));
     }
 
-    public double fifthOfMileCompute() {
+    private double fifthOfMileCompute() {
         return (this.distance * 5) * 0.5;
+    }
+
+    public Double computePrice() {
+        double fifthOfMilePrice = fifthOfMileCompute();
+        int initialCharge = 1;
+
+        if (isBetween6PMand7PM()) {
+            return initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
+        }
+
+        if (isBetween8PMand6AM()) {
+            return initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
+        }
+
+        return initialCharge + fifthOfMilePrice;
     }
 }
