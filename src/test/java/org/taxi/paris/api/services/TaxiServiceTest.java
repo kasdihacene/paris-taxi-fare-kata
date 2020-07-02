@@ -20,4 +20,18 @@ public class TaxiServiceTest {
         // ASSERT
         Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
     }
+
+    @Test
+    public void shouldCalculatePriceWhenRiding3MilesInOutsideBusyPeriod(){
+        // ARRANGE
+        Double expectedPrice = 6.0;
+        Ride ride = new Ride(1, 3, "2020-06-19T13:01:17.031Z", 9000);
+        TaxiUseCase taxiUseCase = new TaxiService();
+
+        // ACT
+        Double actualPrice = taxiUseCase.priceOf(ride);
+
+        // ASSERT
+        Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
+    }
 }
