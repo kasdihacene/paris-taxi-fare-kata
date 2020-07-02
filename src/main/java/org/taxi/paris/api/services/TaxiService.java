@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 
 @Service
 public class TaxiService implements TaxiUseCase {
+
+    public static final int ADDITIONAL_FOR_BUSY_PERIOD = 1;
+    public static final double ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM = 0.5;
+
     /**
      * ***************************
      * ********** RULES **********
@@ -21,18 +25,17 @@ public class TaxiService implements TaxiUseCase {
 
     @Override
     public Double priceOf(Ride ride) {
-        LocalDateTime dateTime = ride.localDateTime();
 
         double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
 
         int initialCharge = 1;
-        if (new Ride().isBetween6PMand7PM(dateTime)) {
-            Double price = initialCharge + 1 + fifthOfMilePrice;
+        if (ride.isBetween6PMand7PM(ride.localDateTime())) {
+            Double price = initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
             return price;
         }
 
-        if (new Ride().isBetween8PMand6AM(dateTime)) {
-            Double price = initialCharge + 0.5 + fifthOfMilePrice;
+        if (ride.isBetween8PMand6AM(ride.localDateTime())) {
+            Double price = initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
             return price;
         }
 
