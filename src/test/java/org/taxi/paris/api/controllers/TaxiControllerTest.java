@@ -2,6 +2,7 @@ package org.taxi.paris.api.controllers;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,10 +33,10 @@ public class TaxiControllerTest {
     @Test
     public void shouldCalculatePriceForRideWhenAsked() throws Exception {
         // ARRANGE
-        double expectedPrice = 6;
+        Double expectedPrice = 6.0;
         Ride ride = new Ride(1, 2, "2020-06-19T13:01:17.031Z", 9000);
 
-        Mockito.when(taxiUseCase.priceOf(ride)).thenReturn(expectedPrice);
+        Mockito.when(taxiUseCase.priceOf(ArgumentMatchers.any(Ride.class))).thenReturn(expectedPrice);
 
         // ACT
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/ride/calculate")
