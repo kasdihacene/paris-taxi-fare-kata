@@ -37,7 +37,7 @@ public class TaxiController {
         }
     }
 
-    @GetMapping(value = "populate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "populate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> populateRideCompany() {
         List rides = Arrays.asList(
                 new Ride(1, 2, "2020-06-19T13:01:17.031Z", 9000),

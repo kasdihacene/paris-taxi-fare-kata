@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <timestamp key="prefix-file" datePattern="yyyy-MM-dd" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[TAXIS-SERVER] %d{yyyy-MM-dd_HH:mm:ss} | %-5level | %-4relative %logger{35} | %M | %X{service} %X{trt} %X{correlid} %X{emetteur} %X{destinataire} %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/log_taxis.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover yyyy-MM-dd-HH-mm -->
+            <fileNamePattern>logs/archive/log_taxis.%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <maxFileSize>5MB</maxFileSize>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>500MB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>[RK-SERVER] %d{yyyy-MM-dd_HH:mm:ss} | %-5level | %-4relative %logger{35} | %M | %X{service} %X{correlid} %X{emetteur} %X{destinataire} %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>
