@@ -1,4 +1,4 @@
-package org.taxi.paris.api.domain;
+package org.taxi.paris.api.validators;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

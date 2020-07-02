@@ -15,10 +15,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.taxi.paris.api.domain.ErrorMessageResponse;
 import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 import org.taxi.paris.api.utils.UtilTest;
+import org.taxi.paris.api.validators.ErrorMessageResponse;
 
 import java.time.LocalDateTime;
 
@@ -80,4 +80,5 @@ public class TaxiControllerTest {
                 .andExpect(jsonPath("$.violationConstraints").value(errorMessage.getViolationConstraints()));
 
     }
+
 }
