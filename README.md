@@ -3,7 +3,7 @@ Backend of Paris Taxi Fare Application
 > Technologies
     
     Java 11
-    Maven 
+    Maven 3.8
     Github Actions for workflow development
 
 
