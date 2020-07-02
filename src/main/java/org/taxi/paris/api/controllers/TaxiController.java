@@ -26,7 +26,7 @@ public class TaxiController {
     @PostMapping(value = "calculate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> addPost(@RequestBody Ride ride) {
         try {
-            Ride rideDTO = new Ride(ride.getId(), ride.getDistance(), ride.getStartTime(), ride.getDuration());
+            Ride rideDTO = Ride.of(ride.getId(), ride.getDistance(), ride.getStartTime(), ride.getDuration());
             Price calculatedPrice = taxiUseCase.priceOf(rideDTO);
             return new ResponseEntity<>(calculatedPrice, HttpStatus.OK);
 
@@ -38,10 +38,10 @@ public class TaxiController {
     @GetMapping(value = "populate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> populateRideCompany() {
         List rides = Arrays.asList(
-                new Ride(1, 2, "2020-06-19T13:01:17.031Z", 9000),
-                new Ride(2, 1, "2020-06-19T12:01:17.031Z", 6000),
-                new Ride(3, 5, "2020-06-19T14:01:17.031Z", 7000),
-                new Ride(4, 5, "2020-06-19T14:11:17.031Z", 4000)
+                Ride.of(1, 2, "2020-06-19T13:01:17.031Z", 9000),
+                Ride.of(2, 1, "2020-06-19T12:01:17.031Z", 6000),
+                Ride.of(3, 5, "2020-06-19T14:01:17.031Z", 7000),
+                Ride.of(4, 5, "2020-06-19T14:11:17.031Z", 4000)
         );
         return new ResponseEntity<>(rides, HttpStatus.OK);
     }

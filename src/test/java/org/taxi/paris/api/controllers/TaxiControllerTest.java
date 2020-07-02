@@ -36,7 +36,7 @@ public class TaxiControllerTest {
     public void shouldCalculatePriceForRideWhenAsked() throws Exception {
         // ARRANGE
         Price expectedPrice = Price.of(6.0);
-        Ride ride = new Ride(1, 2, "2020-06-19T13:01:17.031Z", 9000);
+        Ride ride = Ride.of(1, 2, "2020-06-19T13:01:17.031Z", 9000);
 
         Mockito.when(taxiUseCase.priceOf(ArgumentMatchers.any(Ride.class))).thenReturn(expectedPrice);
 

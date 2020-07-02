@@ -25,12 +25,16 @@ public class Ride extends SelfValidating {
     @Positive
     private int duration;
 
-    public Ride(int id, int distance, String startTime, int duration) {
+    private Ride(int id, int distance, String startTime, int duration) {
         this.id = id;
         this.distance = distance;
         this.startTime = startTime;
         this.duration = duration;
         super.validateSelf();
+    }
+
+    public static Ride of(int id, int distance, String startTime, int duration) {
+        return new Ride(id, distance, startTime, duration);
     }
 
     private LocalDateTime localDateTime() {
