@@ -39,4 +39,12 @@ public class Ride {
     public LocalDateTime localDateTime() {
         return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
     }
+
+    public boolean isBetween8PMand6AM() {
+        return isBetween8PMand6AM(localDateTime());
+    }
+
+    public boolean isBetween6PMand7PM() {
+        return isBetween6PMand7PM(localDateTime());
+    }
 }
