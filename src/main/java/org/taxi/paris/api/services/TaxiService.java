@@ -5,7 +5,6 @@ import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Service
 public class TaxiService implements TaxiUseCase {
@@ -27,12 +26,12 @@ public class TaxiService implements TaxiUseCase {
         double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
 
         int initialCharge = 1;
-        if (isBetween6PMand7PM(dateTime)) {
+        if (new Ride().isBetween6PMand7PM(dateTime)) {
             Double price = initialCharge + 1 + fifthOfMilePrice;
             return price;
         }
 
-        if (isBetween8PMand6AM(dateTime)) {
+        if (new Ride().isBetween8PMand6AM(dateTime)) {
             Double price = initialCharge + 0.5 + fifthOfMilePrice;
             return price;
         }
@@ -41,15 +40,4 @@ public class TaxiService implements TaxiUseCase {
         return price;
     }
 
-    private boolean isBetween8PMand6AM(LocalDateTime dateTime) {
-        return ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
-                && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
-                ((dateTime.toLocalTime().isAfter(LocalTime.MIDNIGHT) || (dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)))
-                        && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)));
-    }
-
-    private boolean isBetween6PMand7PM(LocalDateTime dateTime) {
-        return (dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
-                && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0));
-    }
 }
