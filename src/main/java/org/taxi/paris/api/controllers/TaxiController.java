@@ -28,7 +28,7 @@ public class TaxiController {
         try {
             Ride rideDTO = Ride.of(ride.getId(), ride.getDistance(), ride.getStartTime(), ride.getDuration());
             Price calculatedPrice = taxiUseCase.priceOf(rideDTO);
-            return new ResponseEntity<>(calculatedPrice, HttpStatus.OK);
+            return new ResponseEntity<Object>(calculatedPrice, HttpStatus.OK);
 
         } catch (ConstraintViolationException violationException) {
             throw new IncompleteDataBusinessException(violationException.getMessage());
@@ -43,7 +43,7 @@ public class TaxiController {
                 Ride.of(3, 5, "2020-06-19T14:01:17.031Z", 7000),
                 Ride.of(4, 5, "2020-06-19T14:11:17.031Z", 4000)
         );
-        return new ResponseEntity<>(rides, HttpStatus.OK);
+        return new ResponseEntity<Object>(rides, HttpStatus.OK);
     }
 
 }
