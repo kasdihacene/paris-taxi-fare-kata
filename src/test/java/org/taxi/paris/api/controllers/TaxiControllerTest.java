@@ -1,5 +1,6 @@
 package org.taxi.paris.api.controllers;
 
+import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -7,15 +8,19 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.taxi.paris.api.domain.ErrorMessageResponse;
 import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 import org.taxi.paris.api.utils.UtilTest;
+
+import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,6 +54,30 @@ public class TaxiControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(expectedPrice));
+
+    }
+
+    @Test
+    public void shouldThrowAnExceptionWhenHavingIncompleteData() throws Exception {
+        // ARRANGE
+        JSONObject ride = new JSONObject();
+        ride.put("id", 11).put("distance", 4).put("startTime", "").put("duration", 9000);
+
+        HttpStatus preconditionRequired = HttpStatus.PRECONDITION_REQUIRED;
+        ErrorMessageResponse errorMessage = new ErrorMessageResponse("Missing data on Ride Object", LocalDateTime.now(), "Please complete all required data.", preconditionRequired);
+
+
+        // ACT
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/ride/calculate")
+                .content(ride.toString())
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE);
+
+        // ASSERT
+        mockMvc.perform(builder)
+                .andExpect(status().isPreconditionRequired())
+                .andExpect(jsonPath("$.violationConstraints").value(errorMessage.getViolationConstraints()));
 
     }
 }

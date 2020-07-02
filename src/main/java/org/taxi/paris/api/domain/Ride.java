@@ -1,27 +1,34 @@
 package org.taxi.paris.api.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.taxi.paris.api.validators.SelfValidating;
 
+import javax.validation.constraints.NegativeOrZero;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.*;
 
 @Getter
 @Setter
-public class Ride {
+@NoArgsConstructor
+public class Ride extends SelfValidating {
 
     private int id;
+    @Positive
     private int distance;
+    @NotBlank
     private String startTime;
+    @Positive
     private int duration;
-
-    public Ride() {
-    }
 
     public Ride(int id, int distance, String startTime, int duration) {
         this.id = id;
         this.distance = distance;
         this.startTime = startTime;
         this.duration = duration;
+        super.validateSelf();
     }
 
     public LocalDateTime localDateTime() {
