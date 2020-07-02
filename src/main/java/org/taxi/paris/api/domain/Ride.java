@@ -3,11 +3,13 @@ package org.taxi.paris.api.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.taxi.paris.api.exceptions.RideDateTimeBusinessParseException;
 import org.taxi.paris.api.validators.SelfValidating;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.time.*;
+import java.time.format.DateTimeParseException;
 
 @Getter
 @Setter
@@ -38,7 +40,11 @@ public class Ride extends SelfValidating {
     }
 
     private LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
+        try {
+            return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
+        } catch (DateTimeParseException parseException) {
+            throw new RideDateTimeBusinessParseException(parseException.getMessage());
+        }
     }
 
     private boolean isBetween8PMand6AM() {

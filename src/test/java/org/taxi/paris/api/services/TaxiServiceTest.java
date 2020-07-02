@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.taxi.paris.api.domain.Price;
 import org.taxi.paris.api.domain.Ride;
+import org.taxi.paris.api.exceptions.RideDateTimeBusinessParseException;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 
 public class TaxiServiceTest {
@@ -132,6 +133,16 @@ public class TaxiServiceTest {
 
         // ASSERT
         Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
+    }
+
+    @Test(expected = RideDateTimeBusinessParseException.class)
+    public void shouldThrowAnExceptionWhenHavingIncorrectDateTime() {
+        // ARRANGE
+        Ride ride = Ride.of(1, 4, "2020-06-19T06:20:99.000Z", 9000);
+        TaxiUseCase taxiUseCase = new TaxiService();
+
+        // ACT
+        taxiUseCase.priceOf(ride);
     }
 
 
