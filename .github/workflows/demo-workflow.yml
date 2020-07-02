@@ -2,9 +2,9 @@ name: dev-workflow-api
 
 on:
   push:
-    branches: [ bdd-features ]
+    branches: [ master ]
   pull_request:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
 
