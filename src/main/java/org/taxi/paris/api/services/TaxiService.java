@@ -24,9 +24,9 @@ public class TaxiService implements TaxiUseCase {
     @Override
     public Double priceOf(Ride ride) {
 
-        double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
-
+        double fifthOfMilePrice = ride.fifthOfMileCompute();
         int initialCharge = 1;
+
         if (ride.isBetween6PMand7PM()) {
             return initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
         }

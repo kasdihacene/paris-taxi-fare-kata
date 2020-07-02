@@ -24,27 +24,25 @@ public class Ride {
         this.duration = duration;
     }
 
-    public boolean isBetween6PMand7PM(LocalDateTime dateTime) {
-        return (dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
-                && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0));
+    public LocalDateTime localDateTime() {
+        return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
     }
 
-    public boolean isBetween8PMand6AM(LocalDateTime dateTime) {
+    public boolean isBetween8PMand6AM() {
+        LocalDateTime dateTime = localDateTime();
         return ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
                 && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
                 ((dateTime.toLocalTime().isAfter(LocalTime.MIDNIGHT) || (dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)))
                         && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)));
     }
 
-    public LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.parse(this.startTime), ZoneId.of(ZoneOffset.UTC.getId()));
-    }
-
-    public boolean isBetween8PMand6AM() {
-        return isBetween8PMand6AM(localDateTime());
-    }
-
     public boolean isBetween6PMand7PM() {
-        return isBetween6PMand7PM(localDateTime());
+        LocalDateTime dateTime = localDateTime();
+        return (dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
+                && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0));
+    }
+
+    public double fifthOfMileCompute() {
+        return (this.distance * 5) * 0.5;
     }
 }
