@@ -25,18 +25,23 @@ public class TaxiService implements TaxiUseCase {
         Instant instant = Instant.parse(startTime);
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
 
+        double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
         if ((dateTime.toLocalTime().isAfter(LocalTime.of(16, 0)) || dateTime.toLocalTime().equals(LocalTime.of(16, 0)))
                 && dateTime.toLocalTime().isBefore(LocalTime.of(20, 0))) {
-            Double price = 1 + 1 + (ride.getDistance() * 5) * 0.5;
+            Double price = 1 + 1 + fifthOfMilePrice;
             return price;
         }
 
-        if ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))) {
-            Double price = 1 + 0.5 + (ride.getDistance() * 5) * 0.5;
+        if (((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
+                && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
+                ((dateTime.toLocalTime().isAfter(LocalTime.MIDNIGHT) || (dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)))
+                        && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)))
+        ) {
+            Double price = 1 + 0.5 + fifthOfMilePrice;
             return price;
         }
 
-        Double price = 1 + (ride.getDistance() * 5) * 0.5;
+        Double price = 1 + fifthOfMilePrice;
         return price;
     }
 }

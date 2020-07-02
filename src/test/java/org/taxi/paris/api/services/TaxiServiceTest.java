@@ -91,4 +91,46 @@ public class TaxiServiceTest {
         // ASSERT
         Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
     }
+
+    @Test
+    public void shouldReturnPriceRelatedToBusyPeriodWhenRidingAfter8PMAndBefore6AM(){
+        // ARRANGE
+        Double expectedPrice = 11.5;
+        Ride ride = new Ride(1, 4, "2020-06-19T01:00:00.000Z", 9000);
+        TaxiUseCase taxiUseCase = new TaxiService();
+
+        // ACT
+        Double actualPrice = taxiUseCase.priceOf(ride);
+
+        // ASSERT
+        Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
+    }
+
+    @Test
+    public void shouldReturnPriceRelatedToBusyPeriodWhenRidingAtMidnight(){
+        // ARRANGE
+        Double expectedPrice = 11.5;
+        Ride ride = new Ride(1, 4, "2020-06-19T00:00:00.000Z", 9000);
+        TaxiUseCase taxiUseCase = new TaxiService();
+
+        // ACT
+        Double actualPrice = taxiUseCase.priceOf(ride);
+
+        // ASSERT
+        Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
+    }
+
+    @Test
+    public void shouldReturnPriceRelatedToBusyPeriodWhenRidingAt6AM(){
+        // ARRANGE
+        Double expectedPrice = 11.5;
+        Ride ride = new Ride(1, 4, "2020-06-19T06:20:00.000Z", 9000);
+        TaxiUseCase taxiUseCase = new TaxiService();
+
+        // ACT
+        Double actualPrice = taxiUseCase.priceOf(ride);
+
+        // ASSERT
+        Assertions.assertThat(actualPrice).isEqualTo(expectedPrice);
+    }
 }
