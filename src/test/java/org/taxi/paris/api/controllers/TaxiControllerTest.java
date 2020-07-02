@@ -8,19 +8,16 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.taxi.paris.api.domain.Price;
 import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 import org.taxi.paris.api.utils.UtilTest;
-import org.taxi.paris.api.validators.ErrorMessageResponse;
-
-import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,7 +35,7 @@ public class TaxiControllerTest {
     @Test
     public void shouldCalculatePriceForRideWhenAsked() throws Exception {
         // ARRANGE
-        Double expectedPrice = 6.0;
+        Price expectedPrice = Price.of(6.0);
         Ride ride = new Ride(1, 2, "2020-06-19T13:01:17.031Z", 9000);
 
         Mockito.when(taxiUseCase.priceOf(ArgumentMatchers.any(Ride.class))).thenReturn(expectedPrice);
@@ -53,7 +50,7 @@ public class TaxiControllerTest {
         // ASSERT
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(expectedPrice));
+                .andExpect(jsonPath("$.price").value(expectedPrice.getPrice()));
 
     }
 
@@ -62,10 +59,6 @@ public class TaxiControllerTest {
         // ARRANGE
         JSONObject ride = new JSONObject();
         ride.put("id", 11).put("distance", 4).put("startTime", "").put("duration", 9000);
-
-        HttpStatus preconditionRequired = HttpStatus.PRECONDITION_REQUIRED;
-        ErrorMessageResponse errorMessage = new ErrorMessageResponse("Missing data on Ride Object", LocalDateTime.now(), "Please complete all required data.", preconditionRequired);
-
 
         // ACT
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/api/ride/calculate")
@@ -76,8 +69,7 @@ public class TaxiControllerTest {
 
         // ASSERT
         mockMvc.perform(builder)
-                .andExpect(status().isPreconditionRequired())
-                .andExpect(jsonPath("$.violationConstraints").value(errorMessage.getViolationConstraints()));
+                .andExpect(status().isPreconditionRequired());
 
     }
 

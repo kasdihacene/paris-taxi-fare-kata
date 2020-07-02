@@ -39,8 +39,9 @@ public class Ride extends SelfValidating {
 
     private boolean isBetween8PMand6AM() {
         LocalDateTime dateTime = localDateTime();
-        return ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
-                && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
+        return (
+                (dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))
+                        && dateTime.toLocalTime().isBefore(LocalTime.MAX)) ||
                 ((dateTime.toLocalTime().isAfter(LocalTime.MIDNIGHT) || (dateTime.toLocalTime().equals(LocalTime.MIDNIGHT)))
                         && dateTime.toLocalTime().isBefore(LocalTime.of(7, 0)));
     }
@@ -55,18 +56,22 @@ public class Ride extends SelfValidating {
         return (this.distance * 5) * 0.5;
     }
 
-    public Double computePrice() {
+    public Price computePrice() {
         double fifthOfMilePrice = fifthOfMileCompute();
         int initialCharge = 1;
 
         if (isBetween6PMand7PM()) {
-            return initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
+            double price = initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
+
+            return Price.of(price);
         }
 
         if (isBetween8PMand6AM()) {
-            return initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
+            double price = initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
+            return Price.of(price);
         }
 
-        return initialCharge + fifthOfMilePrice;
+        double price = initialCharge + fifthOfMilePrice;
+        return Price.of(price);
     }
 }

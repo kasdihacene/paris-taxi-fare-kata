@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.taxi.paris.api.domain.Price;
 import org.taxi.paris.api.domain.Ride;
+import org.taxi.paris.api.exceptions.IncompleteDataBusinessException;
 import org.taxi.paris.api.usecases.TaxiUseCase;
-import org.taxi.paris.api.validators.ErrorMessageResponse;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,13 +27,11 @@ public class TaxiController {
     public ResponseEntity<Object> addPost(@RequestBody Ride ride) {
         try {
             Ride rideDTO = new Ride(ride.getId(), ride.getDistance(), ride.getStartTime(), ride.getDuration());
-            Double calculatedPrice = taxiUseCase.priceOf(rideDTO);
+            Price calculatedPrice = taxiUseCase.priceOf(rideDTO);
             return new ResponseEntity<>(calculatedPrice, HttpStatus.OK);
 
         } catch (ConstraintViolationException violationException) {
-            HttpStatus preconditionRequired = HttpStatus.PRECONDITION_REQUIRED;
-            ErrorMessageResponse errorMessage = new ErrorMessageResponse(violationException.getMessage(), LocalDateTime.now(), "Please complete all required data.", preconditionRequired);
-            return new ResponseEntity<>(errorMessage, preconditionRequired);
+            throw new IncompleteDataBusinessException(violationException.getMessage());
         }
     }
 
