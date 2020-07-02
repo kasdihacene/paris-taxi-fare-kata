@@ -27,15 +27,23 @@ public class TaxiService implements TaxiUseCase {
         double fifthOfMilePrice = (ride.getDistance() * 5) * 0.5;
 
         int initialCharge = 1;
-        if (ride.isBetween6PMand7PM(ride.localDateTime())) {
+        if (isBetween6PMand7PM(ride)) {
             return initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
         }
 
-        if (ride.isBetween8PMand6AM(ride.localDateTime())) {
+        if (isBetween8PMand6AM(ride)) {
             return initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
         }
 
         return initialCharge + fifthOfMilePrice;
+    }
+
+    private boolean isBetween8PMand6AM(Ride ride) {
+        return ride.isBetween8PMand6AM(ride.localDateTime());
+    }
+
+    private boolean isBetween6PMand7PM(Ride ride) {
+        return ride.isBetween6PMand7PM(ride.localDateTime());
     }
 
 }
