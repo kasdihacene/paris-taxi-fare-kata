@@ -31,6 +31,11 @@ public class TaxiService implements TaxiUseCase {
             return price;
         }
 
+        if ((dateTime.toLocalTime().isAfter(LocalTime.of(20, 0)) || dateTime.toLocalTime().equals(LocalTime.of(20, 0)))) {
+            Double price = 1 + 0.5 + (ride.getDistance() * 5) * 0.5;
+            return price;
+        }
+
         Double price = 1 + (ride.getDistance() * 5) * 0.5;
         return price;
     }
