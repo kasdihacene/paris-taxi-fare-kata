@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 import org.taxi.paris.api.domain.Ride;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 
-import java.time.LocalDateTime;
-
 @Service
 public class TaxiService implements TaxiUseCase {
 
@@ -30,17 +28,14 @@ public class TaxiService implements TaxiUseCase {
 
         int initialCharge = 1;
         if (ride.isBetween6PMand7PM(ride.localDateTime())) {
-            Double price = initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
-            return price;
+            return initialCharge + ADDITIONAL_FOR_BUSY_PERIOD + fifthOfMilePrice;
         }
 
         if (ride.isBetween8PMand6AM(ride.localDateTime())) {
-            Double price = initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
-            return price;
+            return initialCharge + ADDITIONAL_FOR_PERIOD_BETWEEN_8PM_6AM + fifthOfMilePrice;
         }
 
-        Double price = initialCharge + fifthOfMilePrice;
-        return price;
+        return initialCharge + fifthOfMilePrice;
     }
 
 }
