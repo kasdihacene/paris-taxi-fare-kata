@@ -10,8 +10,6 @@ import org.taxi.paris.api.exceptions.IncompleteDataBusinessException;
 import org.taxi.paris.api.usecases.TaxiUseCase;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/ride")
