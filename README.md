@@ -1,7 +1,13 @@
 ![dev-workflow-api](https://github.com/kasdihacene/paris-taxi-fare-kata/workflows/dev-workflow-api/badge.svg)
 [![codecov](https://codecov.io/gh/kasdihacene/paris-taxi-fare-kata/branch/master/graph/badge.svg)](https://codecov.io/gh/kasdihacene/paris-taxi-fare-kata)
 
-### Paris Taxi Fare API
+### :construction_worker: About Paris Taxi Fare
+A prototype application that calculates the price of a ride/journey for the Paris Taxi Company fleet.
+
+:white_check_mark: [FrontEnd Link](https://github.com/kasdihacene/taxis-ui)
+
+:white_check_mark: [BackEnd Link](https://github.com/kasdihacene/paris-taxi-fare-kata)
+
 Backend of Paris Taxi Fare Application
 > Technologies
     
@@ -20,7 +26,3 @@ Backend of Paris Taxi Fare Application
                                "startTime": "2020-06-19T13:01:17.031Z",
                                "duration": 9000
                                }
-                               
-    Fetch populated Rides : 
-                        HTTP GET
-                        http://localhost:9090/api/ride/populate
