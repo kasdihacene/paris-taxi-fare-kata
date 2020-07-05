@@ -36,15 +36,4 @@ public class TaxiController {
         }
     }
 
-    @GetMapping(value = "populate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> populateRideCompany() {
-        List rides = Arrays.asList(
-                Ride.of(1, 2, "2020-06-19T13:01:17.031Z", 9000),
-                Ride.of(2, 1, "2020-06-19T12:01:17.031Z", 6000),
-                Ride.of(3, 5, "2020-06-19T14:01:17.031Z", 7000),
-                Ride.of(4, 5, "2020-06-19T14:11:17.031Z", 4000)
-        );
-        return new ResponseEntity<Object>(rides, HttpStatus.OK);
-    }
-
 }
