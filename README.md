@@ -13,6 +13,7 @@ Backend of Paris Taxi Fare Application
     
     Java 11
     Maven 3.8
+    TDD OutsideIn Approach using JUnit 5 and jupiter
     Github Actions for workflow development
 
 
