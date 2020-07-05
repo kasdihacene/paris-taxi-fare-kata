@@ -1,3 +1,5 @@
+![dev-workflow-api](https://github.com/kasdihacene/paris-taxi-fare-kata/workflows/dev-workflow-api/badge.svg)
+
 ### Paris Taxi Fare API
 Backend of Paris Taxi Fare Application
 > Technologies
